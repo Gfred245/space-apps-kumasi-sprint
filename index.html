@@ -58,6 +58,11 @@ iframe.full{position:fixed;inset:0;width:100%;height:100%;z-index:20;border:0;bo
 <div class="pvhead"><b id="pvs">Waiting for your code...</b><button id="fsb" class="mini">Full screen</button></div>
 <div id="pverr" class="pverr"></div>
 <iframe id="pv" sandbox="allow-scripts" title="Preview"></iframe>
+<h2 style="margin-top:18px">Happy with it? Submit it to the showcase</h2>
+<p class="hint"><b>1.</b> Tap your team number. <b>2.</b> Tap the button: it copies your code and opens your team's file on GitHub. <b>3.</b> On GitHub: select all, paste over everything, tap <b>Commit changes</b>, then <b>Propose changes</b> and <b>Create pull request</b>. <b>4.</b> Tell the coordinator your team number.</p>
+<div class="chips" id="tm"></div>
+<button class="big" id="sub">Copy my code and open GitHub</button><p class="hint" id="subm" style="margin-top:8px"></p>
+<p class="hint"><a href="showcase.html">Open the showcase</a></p>
 </section>
 </main>
 <footer>Space Apps Kumasi is a locally organised event held under the NASA Space Apps Challenge programme. Taking part is not affiliation with, sponsorship by, or endorsement from NASA or any space agency partner.</footer>
@@ -154,6 +159,12 @@ window.addEventListener("message",e=>{if(e.data&&e.data.lab&&e.data.err){lastErr
  b.innerHTML='<b>The AI code had an error:</b> <span id="em2"></span><br>Copy this and paste it back to the AI so it fixes it.<br><button id="fixb">Copy "fix it" message</button>';
  $("em2").textContent=lastErr;$("fixb").onclick=()=>{navigator.clipboard.writeText("This code gave an error: "+lastErr+". Fix it and give me the full corrected HTML file again, in one code block, nothing else.");$("fixb").textContent="Copied!"}}});
 $("fsb").onclick=()=>{$("pv").classList.add("full");$("fsx").style.display="block"};$("fsx").onclick=()=>{$("pv").classList.remove("full");$("fsx").style.display="none"};
+let team=0;function drawTm(){$("tm").innerHTML=[1,2,3,4,5,6].map(n=>'<button class="'+(team===n?'on':'')+'" onclick="setTm('+n+')">Team '+n+'</button>').join("")}
+function setTm(n){team=n;drawTm()}
+$("sub").onclick=()=>{const c=clean($("code").value);if(!team){$("subm").textContent="Tap your team number first.";return}if(!c){$("subm").textContent="Paste your code in the box above first.";return}
+ const u="https://github.com/PhidLarkson/space-apps-kumasi-sprint/edit/main/features/team-"+team+".html";
+ navigator.clipboard.writeText(c).then(()=>{$("subm").textContent="Code copied. On GitHub: select all, paste, Commit changes, Propose changes, Create pull request.";window.open(u,"_blank")},()=>{$("subm").textContent="Could not copy. Select your code, copy it, then open: "+u})};
+drawTm();
 chips();buildPrompt();
 function confetti(){const c=$("cf"),x=c.getContext("2d");c.width=innerWidth;c.height=innerHeight;const cl=["#eafe07","#0042a6","#fff","#2e96f5","#ff636e"];
  const ps=Array.from({length:140},()=>({x:Math.random()*c.width,y:-20-Math.random()*c.height*.5,v:2+Math.random()*4,s:4+Math.random()*6,c:cl[Math.floor(Math.random()*5)],r:Math.random()*6}));let f=0;
