@@ -27,8 +27,14 @@ label{display:block;font-weight:700;margin:10px 0 4px}input[type=text]{width:100
 .bd{display:inline-block;background:var(--neon);color:var(--navy);border-radius:999px;padding:6px 12px;margin:4px;font-weight:800;font-size:13px}
 canvas{position:fixed;inset:0;pointer-events:none;z-index:9}
 textarea{width:100%;min-height:110px;font-family:monospace;border:2px solid var(--blue);border-radius:10px;padding:10px}
-iframe{width:100%;height:220px;border:2px dashed var(--blue);border-radius:10px;background:#fff;margin-top:8px}
+iframe{width:100%;height:380px;border:2px dashed var(--blue);border-radius:10px;background:#fff;margin-top:8px}
 .stepn{display:inline-block;background:var(--neon);border-radius:50%;width:28px;height:28px;text-align:center;line-height:28px;font-weight:900;margin-right:6px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}.chips button{border:2px solid var(--blue);background:#fff;border-radius:999px;padding:8px 12px;font-weight:700;font-size:14px}.chips button.on{background:var(--neon)}
+.prm{min-height:260px;font-size:12px;line-height:1.4;background:#f6faff}
+.pvhead{display:flex;justify-content:space-between;align-items:center;margin-top:12px}.mini{border:2px solid var(--navy);background:#fff;border-radius:999px;padding:6px 12px;font-weight:700}
+.pverr{display:none;background:#ffe3e3;border:2px solid #d33;border-radius:12px;padding:10px;margin-top:8px;font-size:14px}.pverr button{margin-top:8px;background:#d33;color:#fff;border:0;border-radius:999px;padding:8px 14px;font-weight:700}
+iframe.full{position:fixed;inset:0;width:100%;height:100%;z-index:20;border:0;border-radius:0}
+.fsx{position:fixed;top:10px;right:10px;z-index:30;background:var(--neon);border:0;border-radius:999px;padding:10px 16px;font-weight:800;display:none}
 </style></head><body>
 <header><small>Space Apps Kumasi · Sprint</small><h1>Mars Lab</h1><p>Which place on Earth is most like Mars? Use real NASA data, make your team's mission patch, and launch it to the wall.</p></header>
 <main>
@@ -42,11 +48,20 @@ iframe{width:100%;height:220px;border:2px dashed var(--blue);border-radius:10px;
 <button class="big" style="margin-top:16px" id="go">Build my mission patch</button></section>
 <div id="patch"></div>
 <section class="card" id="s4" style="display:none"><h2><span class="stepn">4</span>Launch it</h2><p class="hint">Send your patch to the big screen. Everyone in the room sees it appear.</p><button class="big" id="launch">Launch to the wall</button><p id="sent" class="hint" style="margin-top:10px"></p><p class="hint"><a href="wall.html">Open the wall</a></p></section>
-<section class="card"><h2>Level up (optional, techy)</h2><p class="hint">Ask an AI chat: "Write one self-contained HTML snippet that shows a [your idea]. No libraries." Paste it here and it runs instantly.</p>
-<textarea id="code" placeholder="Paste AI code here..."></textarea><iframe id="pv" sandbox="allow-scripts" title="Preview"></iframe></section>
+<section class="card" id="lvl"><h2>Level up: make it impressive with AI</h2>
+<p class="hint"><b>1.</b> Tap an idea. <b>2.</b> Edit anything in [ ]. <b>3.</b> Copy the prompt and paste it into your AI chat. <b>4.</b> Copy the code the AI gives you and paste it in the box below. It runs instantly.</p>
+<div class="chips" id="chips"></div>
+<textarea id="prm" class="prm" spellcheck="false"></textarea>
+<button class="big" id="cp" style="margin:10px 0 18px">Copy the prompt</button>
+<label>Paste the AI's code here</label>
+<textarea id="code" placeholder="Paste the code from the AI here (the code block is fine)..."></textarea>
+<div class="pvhead"><b id="pvs">Waiting for your code...</b><button id="fsb" class="mini">Full screen</button></div>
+<div id="pverr" class="pverr"></div>
+<iframe id="pv" sandbox="allow-scripts" title="Preview"></iframe>
+</section>
 </main>
 <footer>Space Apps Kumasi is a locally organised event held under the NASA Space Apps Challenge programme. Taking part is not affiliation with, sponsorship by, or endorsement from NASA or any space agency partner.</footer>
-<canvas id="cf"></canvas>
+<button class="fsx" id="fsx">Close full screen</button><canvas id="cf"></canvas>
 <script>
 const TOPIC="kumasi-gsc26-mtn78dup53";
 const PLACES=[["Kumasi, Ghana",6.67,-1.57],["Accra, Ghana",5.6,-0.19],["Lake Bosomtwe, Ghana",6.5,-1.41],["Atacama Desert, Chile",-22.9,-68.2],["Death Valley, USA",36.46,-116.87],["Haughton Crater, Canada",75.4,-89.7],["Hawaii, Mauna Kea",19.82,-155.47],["Iceland, Askja",65.03,-16.75],["Dallol, Ethiopia",14.24,40.3],["Sahara, Algeria",22.8,5.5]];
@@ -58,11 +73,11 @@ function drawPlaces(){$("places").innerHTML=PLACES.map((p,i)=>'<button class="pl
 function tog(i){if(i===0)return;if(sel.includes(i))sel=sel.filter(x=>x!==i);else if(sel.length<3)sel.push(i);drawPlaces();if(sel.length===3)load()}
 async function get(i){if(data[i])return data[i];const p0=PLACES[i];
  const u="https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,PRECTOTCORR,ALLSKY_SFC_SW_DWN&community=RE&longitude="+p0[2]+"&latitude="+p0[1]+"&start=2025&end=2025&format=JSON";
- const j=await (await fetch(u)).json(),p=j.properties.parameter,y="202513";data[i]={n:p0[0],t:p.T2M[y],r:p.PRECTOTCORR[y],s:p.ALLSKY_SFC_SW_DWN[y]};return data[i]}
+ const j=await (await fetch(u)).json(),p=j.properties.parameter,y="202513";const mo=o=>['01','02','03','04','05','06','07','08','09','10','11','12'].map(m=>+o['2025'+m].toFixed(2));data[i]={n:p0[0],la:p0[1],lo:p0[2],t:p.T2M[y],r:p.PRECTOTCORR[y],s:p.ALLSKY_SFC_SW_DWN[y],mt:mo(p.T2M),mr:mo(p.PRECTOTCORR),ms:mo(p.ALLSKY_SFC_SW_DWN)};return data[i]}
 async function load(){$("s2").style.display="block";$("nums").innerHTML="<p>Asking NASA...</p>";pick=null;$("fb").style.display="none";
  try{const ds=await Promise.all(sel.map(get));
  $("nums").innerHTML=ds.map((d,k)=>'<div class="n"><h3>'+d.n.split(',')[0]+'</h3><div class="row"><span>Temperature</span><b>'+d.t.toFixed(1)+' °C</b></div><div class="row"><span>Rain</span><b>'+d.r.toFixed(2)+' mm/day</b></div><div class="row"><span>Sunlight</span><b>'+d.s.toFixed(1)+'</b></div><div class="bar"><i data-w="'+marsScore(d)+'"></i></div><div class="row"><span>Mars-likeness</span><b>'+marsScore(d)+'/100</b></div><button class="pick" onclick="choose('+k+')">This is most like Mars</button></div>').join("");
- setTimeout(()=>document.querySelectorAll(".bar i").forEach(b=>b.style.width=b.dataset.w+"%"),100)}catch(e){$("nums").innerHTML="<p>Could not reach NASA. Check your signal and tap a place again.</p>"}}
+ setTimeout(()=>document.querySelectorAll(".bar i").forEach(b=>b.style.width=b.dataset.w+"%"),100);buildPrompt()}catch(e){$("nums").innerHTML="<p>Could not reach NASA. Check your signal and tap a place again.</p>"}}
 function choose(k){pick=k;document.querySelectorAll(".pick").forEach((b,i)=>b.classList.toggle("on",i===k));const ds=sel.map(i=>data[i]),sc=ds.map(marsScore),best=sc.indexOf(Math.max(...sc)),fb=$("fb"),nm=x=>ds[x].n.split(',')[0];fb.style.display="block";
  if(k===best)fb.innerHTML="🎯 Your pick matches the data: <b>"+nm(k)+"</b> scores "+sc[k]+"/100 because it is cold and dry. Now tell us what the numbers do NOT show.";
  else fb.innerHTML="🤔 Interesting! The recipe scores <b>"+nm(best)+"</b> higher ("+sc[best]+" vs "+sc[k]+"). The score is only cold + dry. What did you see that made you pick <b>"+nm(k)+"</b>? That is your best sentence.";
@@ -84,7 +99,62 @@ $("go").onclick=()=>{if(pick===null){alert("Tap 'This is most like Mars' on one 
 $("launch").onclick=async()=>{if(!card)return;$("launch").disabled=true;$("launch").textContent="Launching...";
  try{await fetch("https://ntfy.sh/"+TOPIC,{method:"POST",body:JSON.stringify(card)});$("launch").textContent="Launched! 🚀";$("sent").textContent="Look at the big screen. Your patch is there.";confetti()}
  catch(e){$("launch").disabled=false;$("launch").textContent="Try again";$("sent").textContent="No signal? Show your patch to the coordinator instead."}};
-let ct;$("code").oninput=()=>{clearTimeout(ct);ct=setTimeout(()=>{$("pv").srcdoc=$("code").value},400)};
+const IDEAS=["a mission-control dashboard that ranks my 3 places and shows an animated Mars-likeness gauge for each","a 'Mars passport' trading card for the winning place, with stats bars and a stamp","a TV weather broadcast for a Mars base, comparing my 3 places with a funny presenter script","a month-by-month race: an animated chart showing which place is most Mars-like in each month","a survival-meter game: tap a place and see how long a human would last there, using the real numbers","a comic-style infographic that explains why my winner is the best Mars practice site"];
+let idea=0,styleTxt="retro NASA control room, dark space look with neon yellow accents";
+function chips(){$("chips").innerHTML=IDEAS.map((x,i)=>'<button class="'+(i===idea?'on':'')+'" onclick="setIdea('+i+')">'+['Dashboard','Passport card','TV weather','Month race','Survival game','Comic'][i]+'</button>').join("")}
+function setIdea(i){idea=i;chips();buildPrompt()}
+function buildPrompt(){const ds=sel.map(i=>data[i]).filter(Boolean),tn=($("tn")&&$("tn").value.trim())||"[TEAM NAME]";
+ const D=ds.length?ds.map(d=>({name:d.n.split(',')[0],lat:d.la,lon:d.lo,annual:{t:+d.t.toFixed(2),r:+d.r.toFixed(2),s:+d.s.toFixed(2)},monthly:{t:d.mt,r:d.mr,s:d.ms}})):[{name:"[PLACE 1]",lat:0,lon:0,annual:{t:0,r:0,s:0},monthly:{t:[],r:[],s:[]}}];
+ const ex=ds.length?"":"\n(Pick your 3 places above first. The real NASA numbers will fill in here automatically.)";
+ $("prm").value=`You are a creative front-end developer. Build a feature for a NASA Space Apps "Mars Lab" page.
+
+TASK
+Write ONE complete, self-contained HTML file (HTML + CSS + JavaScript in the same file). No libraries, no external files, no images from the internet. It must work inside a small preview frame on a phone.
+
+THE FEATURE (edit the parts in [ ])
+Idea: [${IDEAS[idea]}]
+Team name to show on screen: [${tn}]
+Look and mood: [${styleTxt}]
+
+THE REAL NASA DATA (use it exactly as given, never invent numbers)
+const DATA = ${JSON.stringify(D)};
+Units: t = temperature in °C at 2 m, r = rain in mm per day, s = sunlight in kWh per m² per day. "annual" is the 2025 average. "monthly" has 12 values, January to December 2025. Source: NASA POWER.${ex}
+
+CALCULATIONS (do these in JavaScript, locally, from DATA)
+- Mars-likeness (0 to 100) = 50% coldness + 50% dryness, where coldness = clamp((25 - t) / 45, 0, 1) and dryness = clamp(1 - r / 5, 0, 1). Work it out for the annual numbers and for every month.
+- Also work out: the coldest month, the hottest month, the wettest month, the sunniest month, the temperature range over the year, and rank the places from most to least Mars-like.
+- Show the formula in small text so anyone can see how the score is made.
+
+MAKE IT IMPRESSIVE
+- Dark space look with neon yellow (#eafe07) and blue (#0042a6) accents, big readable text, rounded cards.
+- Animate it: count-up numbers, bars or gauges that grow in, a smooth fade-in on load.
+- Draw at least one chart with <canvas> or SVG (for example 12-month temperature lines for the places).
+- A big headline that includes the team name and the winning place.
+- At least one thing to tap (a place, a month, or a slider) that updates the screen.
+
+RULES
+- Mobile first: fits a 360 px wide screen, no sideways scrolling.
+- No alert(), prompt(), localStorage, popups, or links that leave the page.
+- Never show a blank screen: handle errors gracefully.
+- Return ONLY the code in one HTML code block. No explanation before or after.
+
+BONUS (only if it stays simple)
+A "Refresh from NASA" button that fetches https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,PRECTOTCORR,ALLSKY_SFC_SW_DWN&community=RE&longitude=[LON]&latitude=[LAT]&start=2025&end=2025&format=JSON and reads json.properties.parameter.T2M["202501"] to ["202512"] (and ["202513"] for the yearly average), the same for PRECTOTCORR and ALLSKY_SFC_SW_DWN.`}
+$("cp").onclick=()=>{navigator.clipboard.writeText($("prm").value).then(()=>{$("cp").textContent="Copied! Now paste it into your AI chat";setTimeout(()=>$("cp").textContent="Copy the prompt",3000)},()=>{$("prm").select();$("cp").textContent="Press Copy on your phone menu"})};
+function clean(code){return code.replace(/^\s*```[a-zA-Z]*\s*/,"").replace(/```\s*$/,"").trim()}
+let ct,lastErr="";
+function preview(){const code=clean($("code").value);$("pverr").style.display="none";
+ if(!code){$("pvs").textContent="Waiting for your code...";$("pv").srcdoc="";return}
+ const guard="<script>window.onerror=function(m,s,l){parent.postMessage({lab:1,err:String(m)+' (line '+l+')'},'*')};<\/script>";
+ let out=code;if(/<head[^>]*>/i.test(out))out=out.replace(/<head[^>]*>/i,x=>x+guard);else if(/<html[^>]*>/i.test(out))out=out.replace(/<html[^>]*>/i,x=>x+guard);else out=guard+out;
+ $("pv").srcdoc=out;$("pvs").textContent="Running your code...";}
+$("code").oninput=()=>{clearTimeout(ct);ct=setTimeout(preview,500)};
+$("pv").onload=()=>{if($("code").value.trim()&&$("pverr").style.display!=="block"){$("pvs").textContent="✅ Your code is running";confetti()}};
+window.addEventListener("message",e=>{if(e.data&&e.data.lab&&e.data.err){lastErr=e.data.err;const b=$("pverr");b.style.display="block";$("pvs").textContent="⚠️ The code has a problem";
+ b.innerHTML='<b>The AI code had an error:</b> <span id="em2"></span><br>Copy this and paste it back to the AI so it fixes it.<br><button id="fixb">Copy "fix it" message</button>';
+ $("em2").textContent=lastErr;$("fixb").onclick=()=>{navigator.clipboard.writeText("This code gave an error: "+lastErr+". Fix it and give me the full corrected HTML file again, in one code block, nothing else.");$("fixb").textContent="Copied!"}}});
+$("fsb").onclick=()=>{$("pv").classList.add("full");$("fsx").style.display="block"};$("fsx").onclick=()=>{$("pv").classList.remove("full");$("fsx").style.display="none"};
+chips();buildPrompt();
 function confetti(){const c=$("cf"),x=c.getContext("2d");c.width=innerWidth;c.height=innerHeight;const cl=["#eafe07","#0042a6","#fff","#2e96f5","#ff636e"];
  const ps=Array.from({length:140},()=>({x:Math.random()*c.width,y:-20-Math.random()*c.height*.5,v:2+Math.random()*4,s:4+Math.random()*6,c:cl[Math.floor(Math.random()*5)],r:Math.random()*6}));let f=0;
  (function a(){x.clearRect(0,0,c.width,c.height);ps.forEach(p=>{p.y+=p.v;p.x+=Math.sin(p.y/30+p.r);x.fillStyle=p.c;x.fillRect(p.x,p.y,p.s,p.s)});if(++f<150)requestAnimationFrame(a);else x.clearRect(0,0,c.width,c.height)})()}
