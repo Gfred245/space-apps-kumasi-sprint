@@ -23,24 +23,45 @@
   .team iframe { width:100%; height:300px; border:2px dashed var(--blue); border-radius:10px; background:#fff; }
   footer { max-width:960px; margin:0 auto; padding:10px 20px 40px; font-size:12px; opacity:.75; }
   mark { background:var(--neon); padding:0 4px; }
+  .steps { padding-left:22px; line-height:1.5; margin:0 0 12px; }
+  .steps li { margin-bottom:8px; }
+  .prompt { background:#eafe07; border-radius:12px; padding:14px; margin:12px 0; font-size:15px; }
+  .prompt button { display:block; margin-top:10px; background:var(--navy); color:#fff; border:0; border-radius:999px; padding:10px 18px; font-weight:700; font-size:15px; }
+  .ideas { font-size:14px; margin:0; }
+  .btn { display:inline-block; background:var(--blue); color:#fff; text-decoration:none; font-weight:800; border-radius:999px; padding:10px 18px; margin:0 0 10px; }
+  .team iframe { height:200px; }
 </style>
 </head>
 <body>
 <header>
   <small>Space Apps Kumasi · Sprint</small>
   <h1>Base Camp Earth</h1>
-  <p>Which place on Earth is most like Mars? Each team adds one feature below. Real NASA weather data, live.</p>
+  <p>Which place on Earth is most like Mars? This page shows real NASA weather data. <b>Your team adds one feature to it.</b></p>
 </header>
 <main>
   <section class="card">
-    <h2>Live from NASA: Kumasi, yearly average</h2>
+    <h2>Your job in 4 steps</h2>
+    <ol class="steps">
+      <li><b>Ask an AI chat</b> for one small feature. Copy the prompt from the green box below.</li>
+      <li><b>Tap your team's button</b> in "Team features" (for example <i>Edit Team 3</i>). It opens your file on GitHub.</li>
+      <li><b>Delete</b> the text between <code>&lt;!-- START --&gt;</code> and <code>&lt;!-- END --&gt;</code>, then <b>paste</b> the AI's code.</li>
+      <li>Tap <b>Commit changes</b>, then <b>Propose changes</b>, then <b>Create pull request</b>. Tell the coordinator your team number. Your box below comes alive after they merge it.</li>
+    </ol>
+    <div class="prompt"><b>Prompt to give the AI</b> (change the part in brackets):<br>
+    <span id="p">Write ONE self-contained HTML file (HTML, CSS and JavaScript in the same file, no libraries) for a small feature: [YOUR IDEA]. Under 80 lines, mobile friendly, with a title and large readable text.</span>
+    <button onclick="navigator.clipboard.writeText(document.getElementById('p').innerText); this.textContent='Copied!'">Copy prompt</button></div>
+    <p class="ideas"><b>Idea starters:</b> a place picker (Atacama, Death Valley, Haughton) · a "Mars score" from temperature and rain · a countdown to a Mars launch window · a team colour theme · a Mars fact card with its source.</p>
+  </section>
+
+  <section class="card">
+    <h2>What NASA says about Kumasi</h2>
     <div class="live" id="live"><div class="stat">Loading NASA data...</div></div>
-    <p style="font-size:13px;margin:10px 0 0">Source: NASA POWER (power.larc.nasa.gov), 2025 yearly average for one point near Kumasi. Model estimates, so say "about".</p>
+    <p style="font-size:13px;margin:10px 0 0">Source: NASA POWER (power.larc.nasa.gov), the 2025 average for one point near Kumasi. These are model estimates, so say "about". Kumasi is warm and wet: the opposite of Mars.</p>
   </section>
 
   <section class="card">
     <h2>Team features</h2>
-    <p>Each team edits <mark>only its own file</mark> in the <code>features</code> folder and proposes the change. Your feature appears in your box once it is merged.</p>
+    <p>Tap <b>your</b> team's button. Edit <mark>only your own file</mark>. Your feature appears in your box once it is merged.</p>
     <div class="grid" id="teams"></div>
   </section>
 </main>
@@ -62,7 +83,7 @@
   // Team boxes: one iframe per team, loading features/team-N.html
   const teams = document.getElementById("teams");
   for (let i = 1; i <= 6; i++) {
-    teams.insertAdjacentHTML("beforeend", `<div class="team"><h3>Team ${i}</h3><iframe src="features/team-${i}.html" title="Team ${i} feature"></iframe></div>`);
+    teams.insertAdjacentHTML("beforeend", `<div class="team"><h3>Team ${i}</h3><a class="btn" href="https://github.com/PhidLarkson/space-apps-kumasi-sprint/edit/main/features/team-${i}.html">Edit Team ${i}</a><iframe src="features/team-${i}.html" title="Team ${i} feature"></iframe></div>`);
   }
 </script>
 </body>
