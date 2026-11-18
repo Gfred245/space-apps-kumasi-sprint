@@ -1,6 +1,550 @@
-<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<style>body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;background:#07173f;color:#fff;font-family:system-ui,sans-serif;text-align:center;padding:20px}h1{color:#eafe07}</style></head>
-<body><!-- TEAM_PLACEHOLDER -->
-<div><h1>Team 5</h1><p>Nothing submitted yet. Paste your code over this whole file on GitHub to appear here.</p></div>
-</body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mars Base Weather · Space Apps Kumasi</title>
+<style>
+  :root{
+    --y:#eafe07; --b:#0042a6; --bg:#04060f; --card:#0b1230; --line:#1c2a5c;
+    --txt:#e9edf7; --dim:#8f9bbf;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{width:100%;overflow-x:hidden}
+  body{
+    background:var(--bg);
+    color:var(--txt);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    font-size:16px; line-height:1.4; min-height:100vh;
+  }
+  body::before{
+    content:""; position:fixed; inset:0; z-index:-2;
+    background:
+      radial-gradient(1px 1px at 12% 18%,#fff9,transparent 60%),
+      radial-gradient(1px 1px at 72% 8%,#fff8,transparent 60%),
+      radial-gradient(1.5px 1.5px at 40% 60%,#fff6,transparent 60%),
+      radial-gradient(1px 1px at 88% 44%,#fff9,transparent 60%),
+      radial-gradient(1px 1px at 25% 85%,#fff7,transparent 60%),
+      radial-gradient(1.5px 1.5px at 60% 92%,#fff5,transparent 60%),
+      radial-gradient(1px 1px at 92% 78%,#fff8,transparent 60%),
+      radial-gradient(ellipse at 50% -10%,#0042a655,transparent 60%),
+      var(--bg);
+  }
+  body::after{
+    content:""; position:fixed; inset:0; z-index:-1; pointer-events:none;
+    background:repeating-linear-gradient(0deg,#ffffff05 0 1px,transparent 1px 3px);
+  }
+  .wrap{max-width:520px;margin:0 auto;padding:12px 12px 70px}
+  .mono{font-family:ui-monospace,"SFMono-Regular",Menlo,Consolas,"Courier New",monospace}
+  .card{
+    background:linear-gradient(180deg,#0d1640,#0a1030);
+    border:1px solid var(--line); border-radius:18px;
+    padding:14px; margin-bottom:12px;
+    box-shadow:0 0 0 1px #0042a633 inset,0 8px 24px #0006;
+    opacity:0; transform:translateY(14px);
+    animation:in .7s ease forwards; animation-delay:var(--d,0s);
+  }
+  @keyframes in{to{opacity:1;transform:none}}
+  .bar{display:flex;justify-content:space-between;align-items:center;gap:6px;font-size:11px;color:var(--dim);letter-spacing:.08em}
+  .live{color:#ff4d4d;font-weight:700;animation:blink 1.2s steps(2) infinite}
+  @keyframes blink{50%{opacity:.35}}
+  .kicker{margin-top:10px;font-size:12px;letter-spacing:.18em;color:var(--y)}
+  h1{font-size:clamp(24px,7.4vw,34px);line-height:1.12;margin:6px 0 6px;font-weight:800}
+  h1 .hl{color:var(--y);text-shadow:0 0 14px #eafe0766}
+  .sub{color:var(--dim);font-size:14px}
+  h2{font-size:13px;letter-spacing:.16em;color:var(--y);margin-bottom:10px;font-weight:700}
+  /* presenter */
+  .presenter{border-color:#eafe0755}
+  .anchor{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+  .face{
+    width:46px;height:46px;border-radius:50%;flex:none;
+    background:radial-gradient(circle at 50% 40%,#ffd9a8 0 38%,transparent 39%),
+               radial-gradient(circle at 50% 50%,#e8ecf5 0 62%,var(--b) 63%);
+    border:2px solid var(--y); position:relative;
+  }
+  .face::after{content:"";position:absolute;left:30%;right:30%;top:46%;height:3px;border-radius:3px;background:#5a3a1a}
+  .face.talk::after{animation:talk .25s infinite alternate}
+  @keyframes talk{to{height:7px;top:44%}}
+  .anchor b{display:block;font-size:15px}
+  .anchor small{color:var(--dim);font-size:12px}
+  .script{
+    min-height:118px;font-size:16px;background:#050a1f;border-radius:12px;
+    padding:12px;border:1px dashed #eafe0744
+  }
+  .script::after{content:"▌";color:var(--y);animation:blink 1s steps(2) infinite}
+  .btn{
+    appearance:none;border:0;cursor:pointer;font:inherit;font-weight:700;
+    background:var(--y);color:#0a0f24;border-radius:999px;padding:10px 16px;
+    margin-top:10px;font-size:14px;
+  }
+  .btn:disabled{opacity:.5}
+  .btn.ghost{background:transparent;color:var(--y);border:1.5px solid var(--y)}
+  /* tabs */
+  .tabs{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+  .tab{
+    flex:1 1 30%;min-width:0;cursor:pointer;font:inherit;font-size:13px;font-weight:700;
+    color:var(--txt);background:#0b1230;border:1.5px solid var(--line);border-radius:14px;
+    padding:9px 6px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    transition:.25s;
+  }
+  .tab i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:1px}
+  .tab.on{border-color:var(--y);background:#0042a6;box-shadow:0 0 14px #eafe0733}
+  /* gauge */
+  .gaugeRow{display:flex;align-items:center;gap:14px}
+  .gauge{position:relative;width:132px;height:132px;flex:none}
+  .gauge svg{width:100%;height:100%;transform:rotate(-90deg)}
+  .gauge circle{fill:none;stroke-width:11}
+  .trk{stroke:#16224d}
+  .arc{stroke:var(--y);stroke-linecap:round;transition:stroke-dashoffset 1.3s cubic-bezier(.2,.8,.2,1);filter:drop-shadow(0 0 6px #eafe0799)}
+  .gnum{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .gnum b{font-size:38px;line-height:1;color:var(--y)}
+  .gnum small{font-size:11px;color:var(--dim)}
+  .pname{font-size:22px;font-weight:800}
+  .prank{color:var(--dim);font-size:13px;margin-top:2px}
+  .tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+  .tile{background:#050a1f;border-radius:12px;padding:9px 6px;text-align:center;border:1px solid var(--line)}
+  .tile small{display:block;color:var(--dim);font-size:11px}
+  .tile b{font-size:20px}
+  .tile em{font-style:normal;font-size:11px;color:var(--dim)}
+  .ext{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+  .ext div{background:#050a1f;border-radius:12px;padding:8px 10px;font-size:13px;border:1px solid var(--line)}
+  .ext span{display:block;color:var(--dim);font-size:11px}
+  .ext b{color:var(--y)}
+  /* chips + chart */
+  .chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+  .chip{cursor:pointer;font:inherit;font-size:12px;font-weight:700;padding:6px 10px;border-radius:999px;border:1px solid var(--line);background:#050a1f;color:var(--txt)}
+  .chip.on{background:var(--y);color:#0a0f24;border-color:var(--y)}
+  canvas{display:block;width:100%;height:220px;touch-action:manipulation;cursor:crosshair}
+  .legend{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;color:var(--dim);margin-top:6px}
+  .legend i{display:inline-block;width:14px;height:3px;border-radius:2px;margin-right:5px;vertical-align:3px}
+  .hint{font-size:12px;color:var(--dim);margin-top:4px}
+  /* month */
+  .mhead{display:flex;justify-content:space-between;align-items:baseline}
+  .mname{font-size:24px;font-weight:800;color:var(--y)}
+  input[type=range]{width:100%;margin:10px 0 6px;accent-color:#eafe07;height:28px}
+  .row{margin:8px 0;cursor:pointer}
+  .row .top{display:flex;justify-content:space-between;font-size:14px;gap:8px}
+  .row .top span{color:var(--dim);font-size:12px}
+  .track{height:12px;background:#16224d;border-radius:99px;overflow:hidden;margin-top:4px}
+  .fill{height:100%;width:0;border-radius:99px;transition:width 1s cubic-bezier(.2,.8,.2,1)}
+  .medal{display:inline-block;min-width:26px;font-weight:800;color:var(--y)}
+  .row.sel .top b{color:var(--y)}
+  .formula{font-size:11.5px;color:var(--dim);background:#050a1f;border-radius:12px;padding:10px;border:1px solid var(--line);word-wrap:break-word}
+  .formula code{color:var(--y)}
+  .status{font-size:12px;color:var(--dim);margin-top:8px;min-height:16px}
+  .src{font-size:11px;color:var(--dim);margin-top:6px}
+  /* ticker */
+  .ticker{
+    position:fixed;left:0;right:0;bottom:0;height:38px;overflow:hidden;
+    background:var(--y);color:#0a0f24;font-weight:700;font-size:14px;
+    display:flex;align-items:center;border-top:3px solid var(--b);z-index:5
+  }
+  .ticker .tag{flex:none;background:var(--b);color:var(--y);height:100%;display:flex;align-items:center;padding:0 10px;font-size:12px;letter-spacing:.1em;z-index:1}
+  .ticker .mv{flex:1;overflow:hidden;white-space:nowrap}
+  .ticker .mv span{display:inline-block;padding-left:12px;animation:tick 40s linear infinite}
+  @keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  .err{background:#3a0d14;border:1px solid #ff4d4d;border-radius:14px;padding:12px;margin-bottom:12px;font-size:14px}
+  @media (prefers-reduced-motion:reduce){*{animation-duration:.01s!important;transition-duration:.01s!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div id="err" class="err" hidden></div>
+
+  <header class="card" style="--d:0s">
+    <div class="bar mono"><span class="live">● LIVE</span><span>MARS BASE WX · CH 4</span><span id="clock">--:--</span></div>
+    <p class="kicker mono">SPACE APPS KUMASI · MARS LAB</p>
+    <h1 id="headline">Space Apps Kumasi Mars Weather</h1>
+    <p class="sub">Which of our 3 places feels most like Mars? Real NASA data from 2025.</p>
+  </header>
+
+  <section class="card presenter" style="--d:.1s">
+    <div class="anchor">
+      <div class="face" id="face"></div>
+      <div><b>Comet Kwame</b><small class="mono">Chief Forecaster, Mars Base Kumasi</small></div>
+    </div>
+    <p class="script" id="script">Warming up the satellite dish…</p>
+    <button class="btn" id="nextBtn">Next report ▶</button>
+  </section>
+
+  <nav class="tabs" id="tabs"></nav>
+
+  <section class="card" style="--d:.2s">
+    <h2 class="mono">MARS-O-METER</h2>
+    <div class="gaugeRow">
+      <div class="gauge">
+        <svg viewBox="0 0 120 120"><circle class="trk" cx="60" cy="60" r="52"/><circle class="arc" id="arc" cx="60" cy="60" r="52"/></svg>
+        <div class="gnum"><b id="gval">0</b><small>/100 Mars-like</small></div>
+      </div>
+      <div style="min-width:0">
+        <div class="pname" id="pname">—</div>
+        <div class="prank" id="prank"></div>
+      </div>
+    </div>
+    <div class="tiles">
+      <div class="tile"><small>Temp</small><b id="vt">0</b><em>°C avg</em></div>
+      <div class="tile"><small>Rain</small><b id="vr">0</b><em>mm/day</em></div>
+      <div class="tile"><small>Sun</small><b id="vs">0</b><em>kWh/m²/day</em></div>
+    </div>
+    <div class="ext" id="ext"></div>
+  </section>
+
+  <section class="card" style="--d:.3s">
+    <h2 class="mono">12-MONTH RADAR · 2025</h2>
+    <div class="chips" id="chips">
+      <button class="chip on" data-m="t">Temperature</button>
+      <button class="chip" data-m="r">Rain</button>
+      <button class="chip" data-m="s">Sunlight</button>
+      <button class="chip" data-m="m">Mars score</button>
+    </div>
+    <canvas id="chart" aria-label="12-month chart"></canvas>
+    <div class="legend" id="legend"></div>
+    <p class="hint">Tap the chart to jump to a month.</p>
+  </section>
+
+  <section class="card" style="--d:.4s">
+    <div class="mhead"><h2 class="mono" style="margin:0">MONTH DIAL</h2><span class="mname" id="mname">Jan</span></div>
+    <input type="range" min="0" max="11" value="0" id="slider" aria-label="Month">
+    <div id="monthRows"></div>
+  </section>
+
+  <section class="card" style="--d:.5s">
+    <h2 class="mono">LEAGUE TABLE · MOST TO LEAST MARS-LIKE</h2>
+    <div id="rank"></div>
+  </section>
+
+  <section class="card" style="--d:.6s">
+    <h2 class="mono">HOW THE SCORE WORKS</h2>
+    <p class="formula mono">
+      <code>Mars-likeness = 100 × (0.5 × coldness + 0.5 × dryness)</code><br>
+      coldness = clamp((25 − t) / 45, 0, 1)<br>
+      dryness = clamp(1 − r / 5, 0, 1)<br>
+      t = temperature at 2 m (°C), r = rain (mm/day)
+    </p>
+    <button class="btn ghost" id="refresh">⟳ Refresh from NASA</button>
+    <div class="status mono" id="status"></div>
+    <p class="src">Source: NASA POWER · monthly averages Jan–Dec 2025 · <span id="srcmode">built-in data</span></p>
+  </section>
+</div>
+
+<div class="ticker mono"><div class="tag">MARS WX</div><div class="mv"><span id="tick">Loading the forecast…</span></div></div>
+
+<script>
+const DATA = [{"name":"Kumasi","lat":6.67,"lon":-1.57,"annual":{"t":25.84,"r":4.93,"s":4.58},"monthly":{"t":[26.25,27.32,27.26,27.29,26.28,25.37,24.29,24.38,25.14,25.42,25.79,25.45],"r":[1.08,2.25,2.94,3.67,8.23,9.73,1.91,2.13,9.3,10.35,5.19,2.41],"s":[5.19,5.02,5.04,5.01,5.03,4.61,3.82,3.48,3.92,4.62,4.84,4.44]}},{"name":"Death Valley","lat":36.46,"lon":-116.87,"annual":{"t":20.52,"r":0.43,"s":5.59},"monthly":{"t":[7.4,12.06,14.13,19.05,24.9,30.65,31.83,32.03,27.49,19.94,15.01,11.21],"r":[0.11,0.53,0.28,0.03,0.13,0.02,0.13,0.23,0.45,0.28,1.72,1.29],"s":[3.31,4.37,5.34,6.91,7.55,8.35,8.08,6.96,5.77,4.75,2.96,2.69]}},{"name":"Atacama Desert","lat":-22.9,"lon":-68.2,"annual":{"t":14.22,"r":0.1,"s":7.11},"monthly":{"t":[18.06,19,16.64,13.9,13.22,8.42,10.99,9.92,13.51,14.58,16.24,16.47],"r":[0.03,0.86,0.04,0.01,0,0.13,0.02,0,0.01,0.01,0.07,0.07],"s":[8.82,7.17,7.54,6.43,5.4,4.78,5.14,6.25,7.18,8.63,9,8.97]}}];
+
+const TEAM = "Space Apps Kumasi";
+const M = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const MF = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+const COL = ["#eafe07","#ff8a3d","#5fb4ff","#c58bff","#4dffb8"];
+const CIRC = 2*Math.PI*52;
+const $ = id => document.getElementById(id);
+
+let places = [], ranked = [], sel = 0, month = 0, metric = "t", tw = null, animId = null;
+
+const clamp = (x,a,b) => Math.min(b, Math.max(a, x));
+const score = (t,r) => 100*(0.5*clamp((25-t)/45,0,1) + 0.5*clamp(1-r/5,0,1));
+const fmt = (v,d) => Number(v).toFixed(d);
+const ord = n => n + (["th","st","nd","rd"][n] || "th");
+
+function argBy(arr, better){ return arr.reduce((bi,v,i)=> better(v,arr[bi]) ? i : bi, 0); }
+
+function analyse(p, i){
+  const m = p.monthly;
+  return {
+    ...p, color: COL[i % COL.length],
+    score: score(p.annual.t, p.annual.r),
+    mScore: m.t.map((t,k)=>score(t, m.r[k])),
+    cold: argBy(m.t,(a,b)=>a<b), hot: argBy(m.t,(a,b)=>a>b),
+    wet: argBy(m.r,(a,b)=>a>b), sun: argBy(m.s,(a,b)=>a>b),
+    range: Math.max(...m.t) - Math.min(...m.t)
+  };
+}
+
+function build(){
+  places = DATA.map(analyse);
+  ranked = [...places].sort((a,b)=>b.score-a.score);
+  places.forEach(p => p.rank = ranked.indexOf(p));
+}
+
+/* ---------- animation helpers ---------- */
+const counters = new WeakMap();
+function countUp(el, to, dec, dur=1100){
+  const from = parseFloat(el.textContent) || 0;
+  const token = {}; counters.set(el, token);
+  const t0 = performance.now();
+  (function step(now){
+    if (counters.get(el) !== token) return;
+    const k = Math.min(1, (now - t0)/dur), e = 1 - Math.pow(1-k, 3);
+    el.textContent = fmt(from + (to-from)*e, dec);
+    if (k < 1) requestAnimationFrame(step);
+  })(t0);
+}
+
+function say(text){
+  clearInterval(tw);
+  const el = $("script"), face = $("face");
+  el.textContent = ""; face.classList.add("talk");
+  let i = 0;
+  tw = setInterval(()=>{
+    el.textContent = text.slice(0, ++i);
+    if (i >= text.length){ clearInterval(tw); face.classList.remove("talk"); }
+  }, 17);
+}
+
+/* ---------- presenter script ---------- */
+function scriptFor(p){
+  const a = p.annual, m = p.monthly, L = [];
+  if (p.rank === 0){
+    L.push(`Good evening, Mars Base! Tonight's champion: ${p.name}, scoring ${fmt(p.score,0)} out of 100 on the Mars-o-meter.`);
+    L.push(`Rain? Just ${fmt(a.r,2)} mm a day. That's not a forecast, that's a rumour.`);
+    L.push(`Sunniest in ${MF[p.sun]} at ${fmt(m.s[p.sun],2)} kWh per square metre. Pack sunscreen. Then pack more sunscreen.`);
+  } else if (p.rank === places.length - 1){
+    L.push(`And now, ${p.name}, with a Mars-likeness of ${fmt(p.score,0)} out of 100.`);
+    L.push(`An average of ${fmt(a.t,1)}°C and ${fmt(a.r,2)} mm of rain a day. Mars took one look and said "no thanks".`);
+    L.push(`Wettest month: ${MF[p.wet]}, ${fmt(m.r[p.wet],2)} mm a day. Rovers, bring umbrellas.`);
+  } else {
+    L.push(`Over to ${p.name}, our ${ord(p.rank+1)} place, at ${fmt(p.score,0)} out of 100.`);
+    L.push(`It swings ${fmt(p.range,1)}°C over the year, from ${fmt(m.t[p.cold],1)}°C in ${MF[p.cold]} to ${fmt(m.t[p.hot],1)}°C in ${MF[p.hot]}.`);
+    L.push(`Dry as a space biscuit at ${fmt(a.r,2)} mm of rain a day. Back to you in the studio!`);
+  }
+  if (p.name === "Kumasi") L.push("Good news though: still perfect weather for jollof.");
+  return L.join(" ");
+}
+
+/* ---------- renderers ---------- */
+function renderHeadline(){
+  const w = ranked[0];
+  $("headline").innerHTML = `${TEAM}: <span class="hl">${w.name}</span> is the most Mars-like place on Earth`;
+}
+
+function renderTabs(){
+  $("tabs").innerHTML = places.map((p,i)=>
+    `<button class="tab ${i===sel?"on":""}" data-i="${i}"><i style="background:${p.color}"></i>${p.name}</button>`).join("");
+}
+
+function renderPlace(){
+  const p = places[sel], m = p.monthly;
+  $("pname").textContent = p.name;
+  $("prank").textContent = `${ord(p.rank+1)} of ${places.length} · ${fmt(p.lat,2)}°, ${fmt(p.lon,2)}°`;
+  $("arc").style.strokeDasharray = CIRC;
+  requestAnimationFrame(()=> $("arc").style.strokeDashoffset = CIRC*(1 - p.score/100));
+  countUp($("gval"), p.score, 0);
+  countUp($("vt"), p.annual.t, 1);
+  countUp($("vr"), p.annual.r, 2);
+  countUp($("vs"), p.annual.s, 2);
+  $("ext").innerHTML = `
+    <div><span>Coldest month</span><b>${M[p.cold]}</b> · ${fmt(m.t[p.cold],2)}°C</div>
+    <div><span>Hottest month</span><b>${M[p.hot]}</b> · ${fmt(m.t[p.hot],2)}°C</div>
+    <div><span>Wettest month</span><b>${M[p.wet]}</b> · ${fmt(m.r[p.wet],2)} mm/day</div>
+    <div><span>Sunniest month</span><b>${M[p.sun]}</b> · ${fmt(m.s[p.sun],2)} kWh</div>
+    <div style="grid-column:1/-1"><span>Temperature range over 2025</span><b>${fmt(p.range,2)}°C</b> (from ${fmt(m.t[p.cold],2)} to ${fmt(m.t[p.hot],2)}°C)</div>`;
+}
+
+function renderRank(){
+  $("rank").innerHTML = ranked.map((p,i)=>{
+    const idx = places.indexOf(p);
+    return `<div class="row ${idx===sel?"sel":""}" data-i="${idx}">
+      <div class="top"><b><span class="medal">#${i+1}</span>${p.name}</b><b>${fmt(p.score,1)}</b></div>
+      <div class="track"><div class="fill" style="background:${p.color}" data-w="${p.score}"></div></div></div>`;
+  }).join("");
+  growBars($("rank"));
+}
+
+function renderMonth(){
+  $("mname").textContent = MF[month];
+  $("slider").value = month;
+  const order = [...places].sort((a,b)=>b.mScore[month]-a.mScore[month]);
+  $("monthRows").innerHTML = order.map(p=>{
+    const idx = places.indexOf(p);
+    return `<div class="row ${idx===sel?"sel":""}" data-i="${idx}">
+      <div class="top"><b>${p.name}</b><b>${fmt(p.mScore[month],1)}</b></div>
+      <div class="top"><span>${fmt(p.monthly.t[month],2)}°C · ${fmt(p.monthly.r[month],2)} mm/day · ${fmt(p.monthly.s[month],2)} kWh/m²</span></div>
+      <div class="track"><div class="fill" style="background:${p.color}" data-w="${p.mScore[month]}"></div></div></div>`;
+  }).join("");
+  growBars($("monthRows"));
+}
+
+function growBars(root){
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    root.querySelectorAll(".fill").forEach(f=> f.style.width = Math.max(1.5, +f.dataset.w) + "%");
+  }));
+}
+
+function renderLegend(){
+  $("legend").innerHTML = places.map(p=>`<span><i style="background:${p.color}"></i>${p.name}</span>`).join("");
+}
+
+function renderTicker(){
+  const w = ranked[0];
+  const bits = places.map(p=>`${p.name.toUpperCase()}: ${fmt(p.annual.t,1)}°C · ${fmt(p.annual.r,2)} mm/day · Mars score ${fmt(p.score,0)}`);
+  bits.push(`TODAY'S WINNER: ${w.name.toUpperCase()}`, `BROUGHT TO YOU BY ${TEAM.toUpperCase()}`);
+  const s = bits.join("   ★   ") + "   ★   ";
+  $("tick").textContent = s + s;
+}
+
+/* ---------- chart ---------- */
+const UNITS = {t:"°C", r:"mm/day", s:"kWh/m²", m:"score"};
+function series(p){ return metric === "m" ? p.mScore : p.monthly[metric]; }
+
+function draw(prog){
+  const c = $("chart"), ctx = c.getContext("2d");
+  const W = c.clientWidth || 320, H = 220, dpr = window.devicePixelRatio || 1;
+  if (c.width !== Math.round(W*dpr)) { c.width = Math.round(W*dpr); c.height = Math.round(H*dpr); }
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  ctx.clearRect(0,0,W,H);
+  const pl=38, pr=10, pt=12, pb=24, pw=W-pl-pr, ph=H-pt-pb;
+  let all = places.flatMap(series), lo = Math.min(...all), hi = Math.max(...all);
+  if (metric === "m"){ lo = 0; hi = 100; }
+  else { const pad = (hi-lo)*0.1 || 1; lo = metric==="t" ? lo-pad : Math.max(0, lo-pad); hi += pad; }
+  const X = i => pl + pw*i/11, Y = v => pt + ph*(1-(v-lo)/(hi-lo));
+
+  ctx.font = "10px ui-monospace,Menlo,Consolas,monospace";
+  ctx.textAlign = "right"; ctx.textBaseline = "middle";
+  for (let g=0; g<=4; g++){
+    const v = lo + (hi-lo)*g/4, y = Y(v);
+    ctx.strokeStyle = "#1c2a5c"; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(pl,y); ctx.lineTo(W-pr,y); ctx.stroke();
+    ctx.fillStyle = "#8f9bbf"; ctx.fillText(fmt(v, hi-lo<5?1:0), pl-5, y);
+  }
+  ctx.textAlign = "center"; ctx.textBaseline = "top";
+  M.forEach((m,i)=>{ ctx.fillStyle = i===month ? "#eafe07" : "#8f9bbf"; ctx.fillText(m[0], X(i), H-pb+7); });
+  ctx.textAlign = "left"; ctx.fillStyle = "#8f9bbf"; ctx.fillText(UNITS[metric], 2, 0);
+
+  // month marker
+  ctx.setLineDash([4,4]); ctx.strokeStyle = "#eafe0788";
+  ctx.beginPath(); ctx.moveTo(X(month),pt); ctx.lineTo(X(month),pt+ph); ctx.stroke(); ctx.setLineDash([]);
+
+  const upto = prog*11;
+  const order = places.map((p,i)=>i).sort((a,b)=>(a===sel)-(b===sel));
+  order.forEach(i=>{
+    const p = places[i], v = series(p), on = i===sel;
+    ctx.strokeStyle = p.color; ctx.lineWidth = on ? 3.5 : 2;
+    ctx.globalAlpha = on ? 1 : 0.55;
+    ctx.shadowColor = p.color; ctx.shadowBlur = on ? 10 : 0;
+    ctx.beginPath(); ctx.moveTo(X(0), Y(v[0]));
+    for (let k=1; k<=Math.floor(upto); k++) ctx.lineTo(X(k), Y(v[k]));
+    const f = upto - Math.floor(upto), k0 = Math.floor(upto);
+    if (f > 0 && k0 < 11) ctx.lineTo(X(k0)+(X(k0+1)-X(k0))*f, Y(v[k0])+(Y(v[k0+1])-Y(v[k0]))*f);
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+    if (prog >= 1){
+      ctx.fillStyle = p.color; ctx.beginPath(); ctx.arc(X(month), Y(v[month]), on?5:3.5, 0, Math.PI*2); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+  });
+}
+
+function animateChart(){
+  cancelAnimationFrame(animId);
+  const t0 = performance.now();
+  (function step(now){
+    const k = Math.min(1,(now-t0)/1200);
+    draw(1-Math.pow(1-k,3));
+    if (k < 1) animId = requestAnimationFrame(step);
+  })(t0);
+}
+
+/* ---------- interactions ---------- */
+function select(i, speak=true){
+  sel = i;
+  renderTabs(); renderPlace(); renderRank(); renderMonth(); draw(1);
+  if (speak) say(scriptFor(places[sel]));
+}
+
+function renderAll(){
+  renderHeadline(); renderTabs(); renderPlace(); renderRank();
+  renderMonth(); renderLegend(); renderTicker(); animateChart();
+  say(scriptFor(places[sel]));
+}
+
+function onRowTap(e){
+  const r = e.target.closest("[data-i]");
+  if (r) select(+r.dataset.i);
+}
+
+function wire(){
+  $("tabs").addEventListener("click", onRowTap);
+  $("rank").addEventListener("click", onRowTap);
+  $("monthRows").addEventListener("click", onRowTap);
+  $("nextBtn").addEventListener("click", ()=>{
+    const pos = places[sel].rank;
+    select(places.indexOf(ranked[(pos+1) % ranked.length]));
+  });
+  $("chips").addEventListener("click", e=>{
+    const b = e.target.closest(".chip"); if (!b) return;
+    metric = b.dataset.m;
+    document.querySelectorAll(".chip").forEach(c=>c.classList.toggle("on", c===b));
+    animateChart();
+  });
+  $("slider").addEventListener("input", e=>{ month = +e.target.value; renderMonth(); draw(1); });
+  $("chart").addEventListener("click", e=>{
+    const r = e.currentTarget.getBoundingClientRect();
+    const pl = 38, pw = r.width - 38 - 10;
+    month = clamp(Math.round((e.clientX - r.left - pl)/pw*11), 0, 11);
+    renderMonth(); draw(1);
+  });
+  let rt; window.addEventListener("resize", ()=>{ clearTimeout(rt); rt = setTimeout(()=>draw(1), 120); });
+  $("refresh").addEventListener("click", refresh);
+  const tickClock = ()=>{ const d = new Date(); $("clock").textContent = String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0"); };
+  tickClock(); setInterval(tickClock, 15000);
+}
+
+/* ---------- live refresh (bonus) ---------- */
+async function refresh(){
+  const btn = $("refresh"), st = $("status");
+  btn.disabled = true; st.textContent = "Contacting NASA POWER…";
+  const keepName = places[sel] && places[sel].name;
+  try{
+    const keys = M.map((_,i)=>"2025"+String(i+1).padStart(2,"0"));
+    const fresh = await Promise.all(DATA.map(async p=>{
+      const url = `https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,PRECTOTCORR,ALLSKY_SFC_SW_DWN&community=RE&longitude=${p.lon}&latitude=${p.lat}&start=2025&end=2025&format=JSON`;
+      const ctrl = new AbortController(), to = setTimeout(()=>ctrl.abort(), 15000);
+      let res;
+      try { res = await fetch(url, {signal: ctrl.signal}); } finally { clearTimeout(to); }
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      const j = await res.json();
+      const P = j && j.properties && j.properties.parameter;
+      if (!P) throw new Error("Unexpected response");
+      const get = (k,key)=>{ const v = Number(P[k] && P[k][key]); if (!isFinite(v) || v <= -999) throw new Error("Missing value"); return v; };
+      return { name:p.name, lat:p.lat, lon:p.lon,
+        annual:{ t:get("T2M","202513"), r:get("PRECTOTCORR","202513"), s:get("ALLSKY_SFC_SW_DWN","202513") },
+        monthly:{ t:keys.map(k=>get("T2M",k)), r:keys.map(k=>get("PRECTOTCORR",k)), s:keys.map(k=>get("ALLSKY_SFC_SW_DWN",k)) } };
+    }));
+    DATA.splice(0, DATA.length, ...fresh);
+    build();
+    const k = places.findIndex(p=>p.name===keepName);
+    sel = k >= 0 ? k : places.indexOf(ranked[0]);
+    renderAll();
+    const d = new Date();
+    st.textContent = "Updated live from NASA POWER ✓";
+    $("srcmode").textContent = "live refresh at " + String(d.getHours()).padStart(2,"0") + ":" + String(d.getMinutes()).padStart(2,"0");
+  } catch(e){
+    st.textContent = "Couldn't reach NASA right now, so we're still showing the built-in 2025 data.";
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+/* ---------- start ---------- */
+function showError(e){
+  const box = $("err");
+  box.hidden = false;
+  let html = "<b>Mission control hiccup.</b> Showing the basic numbers instead:<br>";
+  try { html += DATA.map(p=>`${p.name}: ${p.annual.t}°C, ${p.annual.r} mm/day rain, ${p.annual.s} kWh/m² sun`).join("<br>"); } catch(_){}
+  box.innerHTML = html;
+  document.querySelectorAll(".card").forEach(c=>{ c.style.opacity = 1; c.style.transform = "none"; });
+}
+
+try{
+  build();
+  sel = places.indexOf(ranked[0]);
+  month = ranked[0].cold;
+  wire();
+  renderAll();
+} catch(e){
+  showError(e);
+}
+window.addEventListener("error", ()=>{ if ($("err").hidden) showError(); });
+</script>
+</body>
+</html>
