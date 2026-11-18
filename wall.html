@@ -1,0 +1,41 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Launch wall | Space Apps Kumasi</title>
+<style>
+:root{--navy:#07173f;--blue:#0042a6;--neon:#eafe07;--sky:#e9f2ff}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,Segoe UI,Roboto,sans-serif;background:var(--sky);color:var(--navy)}
+header{background:var(--navy);color:#fff;padding:22px 18px 26px}header small{letter-spacing:.14em;text-transform:uppercase;color:var(--neon);font-weight:700}
+header h1{margin:4px 0 6px;font-size:clamp(26px,7vw,42px)}header p{margin:0;max-width:640px;opacity:.9}
+main{max-width:900px;margin:0 auto;padding:16px}.card{background:#fff;border-radius:16px;padding:16px;box-shadow:0 2px 10px rgba(7,23,63,.12);margin-bottom:16px}
+h2{margin:0 0 4px;font-size:19px}.hint{font-size:14px;opacity:.8;margin:0 0 12px}
+footer{max-width:900px;margin:0 auto;padding:8px 16px 40px;font-size:12px;opacity:.7}
+button{font:inherit}.big{background:var(--navy);color:#fff;border:0;border-radius:999px;padding:14px 22px;font-weight:800;font-size:17px;width:100%}
+
+body{background:var(--navy);color:#fff}header{background:transparent}main{max-width:1300px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+.c{border-radius:20px;padding:18px;text-align:center;box-shadow:0 8px 30px rgba(0,0,0,.4);position:relative;animation:pop .7s cubic-bezier(.2,1.6,.4,1)}
+@keyframes pop{from{transform:translateY(60px) scale(.6);opacity:0}to{transform:none;opacity:1}}
+.e{font-size:54px}.c h2{margin:4px 0;font-size:22px}.c .s{background:rgba(255,255,255,.18);border-radius:12px;padding:8px;margin:8px 0;font-size:16px}
+.bd{display:inline-block;background:var(--neon);color:var(--navy);border-radius:999px;padding:4px 10px;margin:3px;font-weight:800;font-size:12px}
+.x{position:absolute;top:6px;right:10px;background:none;border:0;color:#fff;opacity:.4;font-size:18px}
+#count{font-size:20px;color:var(--neon);font-weight:800}#empty{opacity:.7;font-size:20px}
+</style></head><body><header><small>Space Apps Kumasi · Sprint</small><h1>Launch wall</h1><p><span id="count">0 teams launched</span> · open the Mars Lab page and launch yours</p></header>
+<main><div class="grid" id="g"></div><p id="empty">Waiting for the first launch...</p></main>
+<script>
+const TOPIC="kumasi-gsc26-uv1lurpim3";const seen=new Set(),hid=new Set(JSON.parse(localStorage.getItem("hid")||"[]"));
+function ok(c){return c&&typeof c.id==="string"&&typeof c.team==="string"&&typeof c.why==="string"&&typeof c.place==="string"}
+function upd(){const n=document.getElementById("g").children.length;document.getElementById("count").textContent=n+" team"+(n===1?"":"s")+" launched"}
+function add(c){if(seen.has(c.id)||hid.has(c.id))return;seen.add(c.id);document.getElementById("empty").style.display="none";
+ const d=document.createElement("div");d.className="c";d.style.background="linear-gradient(160deg,"+c.col+",#07173f)";
+ d.innerHTML='<button class="x" title="hide">×</button><div class="e"></div><h2></h2><div class="p"></div><div class="s"></div><div class="m"></div><div class="bs"></div>';
+ d.querySelector(".e").textContent=c.emo;d.querySelector("h2").textContent=c.team;d.querySelector(".p").textContent="Mission: "+c.place;
+ d.querySelector(".s").textContent="“"+c.why+"”";d.querySelector(".m").textContent=c.t+" °C · "+c.r+" mm/day · Mars-likeness "+c.sc+"/100";
+ c.b.forEach(function(x){const s=document.createElement("span");s.className="bd";s.textContent=x;d.querySelector(".bs").appendChild(s)});
+ d.querySelector(".x").onclick=function(){hid.add(c.id);localStorage.setItem("hid",JSON.stringify([...hid]));d.remove();upd()};
+ document.getElementById("g").prepend(d);upd()}
+function clean(c){return{id:c.id.slice(0,12),team:c.team.slice(0,24),place:c.place.slice(0,30),why:c.why.slice(0,80),emo:String(c.emo||"🚀").slice(0,4),
+ col:/^#[0-9a-f]{6}$/i.test(c.col)?c.col:"#0042a6",t:+c.t||0,r:+c.r||0,sc:+c.sc||0,b:Array.isArray(c.b)?c.b.slice(0,4).map(function(x){return String(x).slice(0,24)}):[]}}
+async function poll(){
+ try{const t=await (await fetch("https://ntfy.sh/"+TOPIC+"/json?poll=1&since=all")).text();
+  t.split("\n").filter(Boolean).forEach(function(l){try{const m=JSON.parse(l);if(m.event==="message"){const c=JSON.parse(m.message);if(ok(c))add(clean(c))}}catch(e){}})}catch(e){}
+ setTimeout(poll,4000)}
+poll();
+</script></body></html>

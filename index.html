@@ -1,90 +1,92 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Base Camp Earth | Space Apps Kumasi Sprint</title>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Mars Lab | Space Apps Kumasi</title>
 <style>
-  :root { --navy:#07173f; --blue:#0042a6; --neon:#eafe07; --sky:#e9f2ff; }
-  * { box-sizing:border-box; }
-  body { margin:0; font-family:system-ui,Segoe UI,Roboto,sans-serif; background:var(--sky); color:var(--navy); }
-  header { background:var(--navy); color:#fff; padding:28px 20px 34px; }
-  header small { letter-spacing:.14em; text-transform:uppercase; color:var(--neon); font-weight:700; }
-  header h1 { margin:6px 0 8px; font-size:clamp(28px,7vw,46px); }
-  header p { margin:0; max-width:640px; opacity:.9; }
-  main { max-width:960px; margin:0 auto; padding:20px; }
-  .card { background:#fff; border-radius:14px; padding:18px; box-shadow:0 2px 10px rgba(7,23,63,.12); margin-bottom:18px; }
-  h2 { margin:0 0 10px; font-size:20px; }
-  .live { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px; }
-  .stat { background:var(--sky); border-radius:12px; padding:14px; text-align:center; }
-  .stat b { display:block; font-size:28px; }
-  .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:14px; }
-  .team h3 { margin:0 0 8px; font-size:16px; }
-  .team iframe { width:100%; height:300px; border:2px dashed var(--blue); border-radius:10px; background:#fff; }
-  footer { max-width:960px; margin:0 auto; padding:10px 20px 40px; font-size:12px; opacity:.75; }
-  mark { background:var(--neon); padding:0 4px; }
-  .steps { padding-left:22px; line-height:1.5; margin:0 0 12px; }
-  .steps li { margin-bottom:8px; }
-  .prompt { background:#eafe07; border-radius:12px; padding:14px; margin:12px 0; font-size:15px; }
-  .prompt button { display:block; margin-top:10px; background:var(--navy); color:#fff; border:0; border-radius:999px; padding:10px 18px; font-weight:700; font-size:15px; }
-  .ideas { font-size:14px; margin:0; }
-  .btn { display:inline-block; background:var(--blue); color:#fff; text-decoration:none; font-weight:800; border-radius:999px; padding:10px 18px; margin:0 0 10px; }
-  .team iframe { height:200px; }
-</style>
-</head>
-<body>
-<header>
-  <small>Space Apps Kumasi · Sprint</small>
-  <h1>Base Camp Earth</h1>
-  <p>Which place on Earth is most like Mars? This page shows real NASA weather data. <b>Your team adds one feature to it.</b></p>
-</header>
+:root{--navy:#07173f;--blue:#0042a6;--neon:#eafe07;--sky:#e9f2ff}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,Segoe UI,Roboto,sans-serif;background:var(--sky);color:var(--navy)}
+header{background:var(--navy);color:#fff;padding:22px 18px 26px}header small{letter-spacing:.14em;text-transform:uppercase;color:var(--neon);font-weight:700}
+header h1{margin:4px 0 6px;font-size:clamp(26px,7vw,42px)}header p{margin:0;max-width:640px;opacity:.9}
+main{max-width:900px;margin:0 auto;padding:16px}.card{background:#fff;border-radius:16px;padding:16px;box-shadow:0 2px 10px rgba(7,23,63,.12);margin-bottom:16px}
+h2{margin:0 0 4px;font-size:19px}.hint{font-size:14px;opacity:.8;margin:0 0 12px}
+footer{max-width:900px;margin:0 auto;padding:8px 16px 40px;font-size:12px;opacity:.7}
+button{font:inherit}.big{background:var(--navy);color:#fff;border:0;border-radius:999px;padding:14px 22px;font-weight:800;font-size:17px;width:100%}
+
+.places{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px}
+.pl{border:2px solid var(--blue);background:#fff;border-radius:12px;padding:10px;font-weight:700;text-align:left}
+.pl.on{background:var(--blue);color:#fff}.pl small{display:block;font-weight:400;opacity:.8}
+.nums{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.n{background:var(--sky);border-radius:12px;padding:12px}.n h3{margin:0 0 6px;font-size:16px}
+.row{display:flex;justify-content:space-between;font-size:14px;margin:2px 0}.bar{height:10px;border-radius:6px;background:#cfe0f7;overflow:hidden;margin-top:8px}
+.bar i{display:block;height:100%;background:var(--blue);width:0;transition:width .8s}
+.pick{margin-top:10px;width:100%;border:2px solid var(--navy);background:#fff;border-radius:999px;padding:10px;font-weight:800}
+.pick.on{background:var(--neon)}
+.fb{background:var(--neon);border-radius:12px;padding:12px;margin-top:12px;font-weight:600;display:none}
+label{display:block;font-weight:700;margin:10px 0 4px}input[type=text]{width:100%;padding:12px;border:2px solid var(--blue);border-radius:10px;font:inherit}
+.sw{display:flex;gap:8px;flex-wrap:wrap}.sw button{width:44px;height:44px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px var(--navy)}.sw button.on{box-shadow:0 0 0 4px var(--blue)}
+.em button{font-size:26px;width:48px;height:48px;border-radius:12px;border:2px solid var(--blue);background:#fff}.em button.on{background:var(--neon)}
+#patch{display:none;border-radius:20px;padding:20px;color:#fff;text-align:center;box-shadow:0 8px 30px rgba(7,23,63,.35);margin-bottom:16px}
+#patch .e{font-size:64px}#patch h2{font-size:26px;margin:6px 0}#patch .s{background:rgba(255,255,255,.2);border-radius:12px;padding:10px;margin:10px 0;font-size:18px}
+.bd{display:inline-block;background:var(--neon);color:var(--navy);border-radius:999px;padding:6px 12px;margin:4px;font-weight:800;font-size:13px}
+canvas{position:fixed;inset:0;pointer-events:none;z-index:9}
+textarea{width:100%;min-height:110px;font-family:monospace;border:2px solid var(--blue);border-radius:10px;padding:10px}
+iframe{width:100%;height:220px;border:2px dashed var(--blue);border-radius:10px;background:#fff;margin-top:8px}
+.stepn{display:inline-block;background:var(--neon);border-radius:50%;width:28px;height:28px;text-align:center;line-height:28px;font-weight:900;margin-right:6px}
+</style></head><body>
+<header><small>Space Apps Kumasi · Sprint</small><h1>Mars Lab</h1><p>Which place on Earth is most like Mars? Use real NASA data, make your team's mission patch, and launch it to the wall.</p></header>
 <main>
-  <section class="card">
-    <h2>Your job in 4 steps</h2>
-    <ol class="steps">
-      <li><b>Ask an AI chat</b> for one small feature. Copy the prompt from the yellow box below.</li>
-      <li><b>Tap your team's button</b> in "Team features" (for example <i>Edit Team 3</i>). It opens your file on GitHub.</li>
-      <li><b>Delete</b> the text between <code>&lt;!-- START --&gt;</code> and <code>&lt;!-- END --&gt;</code>, then <b>paste</b> the AI's code.</li>
-      <li>Tap <b>Commit changes</b>, then <b>Propose changes</b>, then <b>Create pull request</b>. Tell the coordinator your team number. Your box below comes alive after they merge it.</li>
-    </ol>
-    <div class="prompt"><b>Prompt to give the AI</b> (change the part in brackets):<br>
-    <span id="p">Write ONE self-contained HTML file (HTML, CSS and JavaScript in the same file, no libraries) for a small feature: [YOUR IDEA]. Under 80 lines, mobile friendly, with a title and large readable text.</span>
-    <button onclick="navigator.clipboard.writeText(document.getElementById('p').innerText); this.textContent='Copied!'">Copy prompt</button></div>
-    <p class="ideas"><b>Idea starters:</b> a place picker (Atacama, Death Valley, Haughton) · a "Mars score" from temperature and rain · a countdown to a Mars launch window · a team colour theme · a Mars fact card with its source.</p>
-  </section>
-
-  <section class="card">
-    <h2>What NASA says about Kumasi</h2>
-    <div class="live" id="live"><div class="stat">Loading NASA data...</div></div>
-    <p style="font-size:13px;margin:10px 0 0">Source: NASA POWER (power.larc.nasa.gov), the 2025 average for one point near Kumasi. These are model estimates, so say "about". Kumasi is warm and wet: the opposite of Mars.</p>
-  </section>
-
-  <section class="card">
-    <h2>Team features</h2>
-    <p>Tap <b>your</b> team's button. Edit <mark>only your own file</mark>. Your feature appears in your box once it is merged.</p>
-    <div class="grid" id="teams"></div>
-  </section>
+<section class="card"><h2><span class="stepn">1</span>Pick 3 places</h2><p class="hint">Kumasi is already chosen: it is our home. Tap two more.</p><div class="places" id="places"></div></section>
+<section class="card" id="s2" style="display:none"><h2><span class="stepn">2</span>What NASA says</h2><p class="hint">Real weather numbers from NASA POWER (2025 average, model estimates). Say "about".</p><div class="nums" id="nums"></div><div class="fb" id="fb"></div></section>
+<section class="card" id="s3" style="display:none"><h2><span class="stepn">3</span>Make it yours</h2>
+<label>Team name</label><input type="text" id="tn" maxlength="24" placeholder="e.g. Red Dust Crew">
+<label>Colour</label><div class="sw" id="sw"></div>
+<label>Mission emoji</label><div class="sw em" id="em"></div>
+<label>One sentence: why is your pick the best?</label><input type="text" id="why" maxlength="80" placeholder="e.g. It is the coldest and driest, just like Mars">
+<button class="big" style="margin-top:16px" id="go">Build my mission patch</button></section>
+<div id="patch"></div>
+<section class="card" id="s4" style="display:none"><h2><span class="stepn">4</span>Launch it</h2><p class="hint">Send your patch to the big screen. Everyone in the room sees it appear.</p><button class="big" id="launch">Launch to the wall</button><p id="sent" class="hint" style="margin-top:10px"></p><p class="hint"><a href="wall.html">Open the wall</a></p></section>
+<section class="card"><h2>Level up (optional, techy)</h2><p class="hint">Ask an AI chat: "Write one self-contained HTML snippet that shows a [your idea]. No libraries." Paste it here and it runs instantly.</p>
+<textarea id="code" placeholder="Paste AI code here..."></textarea><iframe id="pv" sandbox="allow-scripts" title="Preview"></iframe></section>
 </main>
-<footer>
-  Space Apps Kumasi is a locally organised event held under the NASA Space Apps Challenge programme. Taking part is not affiliation with, sponsorship by, or endorsement from NASA or any space agency partner.
-</footer>
+<footer>Space Apps Kumasi is a locally organised event held under the NASA Space Apps Challenge programme. Taking part is not affiliation with, sponsorship by, or endorsement from NASA or any space agency partner.</footer>
+<canvas id="cf"></canvas>
 <script>
-  // Live NASA data card (starter feature built by the organisers)
-  const url = "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,PRECTOTCORR,ALLSKY_SFC_SW_DWN&community=RE&longitude=-1.57&latitude=6.67&start=2025&end=2025&format=JSON";
-  fetch(url).then(r => r.json()).then(d => {
-    const p = d.properties.parameter, y = "202513";
-    const fmt = (v, n) => (v === undefined ? "n/a" : Number(v).toFixed(n));
-    document.getElementById("live").innerHTML =
-      `<div class="stat"><b>${fmt(p.T2M[y],1)} °C</b>temperature</div>
-       <div class="stat"><b>${fmt(p.PRECTOTCORR[y],1)} mm</b>rain per day</div>
-       <div class="stat"><b>${fmt(p.ALLSKY_SFC_SW_DWN[y],1)}</b>sunlight, kWh per m² per day</div>`;
-  }).catch(() => { document.getElementById("live").innerHTML = '<div class="stat">Could not reach NASA. Check your signal.</div>'; });
-
-  // Team boxes: one iframe per team, loading features/team-N.html
-  const teams = document.getElementById("teams");
-  for (let i = 1; i <= 6; i++) {
-    teams.insertAdjacentHTML("beforeend", `<div class="team"><h3>Team ${i}</h3><a class="btn" href="https://github.com/PhidLarkson/space-apps-kumasi-sprint/edit/main/features/team-${i}.html">Edit Team ${i}</a><iframe src="features/team-${i}.html" title="Team ${i} feature"></iframe></div>`);
-  }
-</script>
-</body>
-</html>
+const TOPIC="kumasi-gsc26-uv1lurpim3";
+const PLACES=[["Kumasi, Ghana",6.67,-1.57],["Accra, Ghana",5.6,-0.19],["Lake Bosomtwe, Ghana",6.5,-1.41],["Atacama Desert, Chile",-22.9,-68.2],["Death Valley, USA",36.46,-116.87],["Haughton Crater, Canada",75.4,-89.7],["Hawaii, Mauna Kea",19.82,-155.47],["Iceland, Askja",65.03,-16.75],["Dallol, Ethiopia",14.24,40.3],["Sahara, Algeria",22.8,5.5]];
+const COLS=["#0042a6","#c2185b","#2e7d32","#e65100","#6a1b9a","#07173f"],EMO=["🚀","🌌","🪐","🛰️","👩‍🚀","🔭","☄️","🌕","🌍","⭐"];
+let sel=[0],data={},pick=null,col=COLS[0],emo=EMO[0],card=null;
+const $=id=>document.getElementById(id),clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+function marsScore(d){const cold=clamp((25-d.t)/45,0,1),dry=clamp(1-d.r/5,0,1);return Math.round(100*(cold+dry)/2)}
+function drawPlaces(){$("places").innerHTML=PLACES.map((p,i)=>'<button class="pl '+(sel.includes(i)?'on':'')+'" onclick="tog('+i+')">'+p[0].split(',')[0]+'<small>'+(p[0].split(',')[1]||'')+'</small></button>').join("")}
+function tog(i){if(i===0)return;if(sel.includes(i))sel=sel.filter(x=>x!==i);else if(sel.length<3)sel.push(i);drawPlaces();if(sel.length===3)load()}
+async function get(i){if(data[i])return data[i];const p0=PLACES[i];
+ const u="https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,PRECTOTCORR,ALLSKY_SFC_SW_DWN&community=RE&longitude="+p0[2]+"&latitude="+p0[1]+"&start=2025&end=2025&format=JSON";
+ const j=await (await fetch(u)).json(),p=j.properties.parameter,y="202513";data[i]={n:p0[0],t:p.T2M[y],r:p.PRECTOTCORR[y],s:p.ALLSKY_SFC_SW_DWN[y]};return data[i]}
+async function load(){$("s2").style.display="block";$("nums").innerHTML="<p>Asking NASA...</p>";pick=null;$("fb").style.display="none";
+ try{const ds=await Promise.all(sel.map(get));
+ $("nums").innerHTML=ds.map((d,k)=>'<div class="n"><h3>'+d.n.split(',')[0]+'</h3><div class="row"><span>Temperature</span><b>'+d.t.toFixed(1)+' °C</b></div><div class="row"><span>Rain</span><b>'+d.r.toFixed(2)+' mm/day</b></div><div class="row"><span>Sunlight</span><b>'+d.s.toFixed(1)+'</b></div><div class="bar"><i data-w="'+marsScore(d)+'"></i></div><div class="row"><span>Mars-likeness</span><b>'+marsScore(d)+'/100</b></div><button class="pick" onclick="choose('+k+')">This is most like Mars</button></div>').join("");
+ setTimeout(()=>document.querySelectorAll(".bar i").forEach(b=>b.style.width=b.dataset.w+"%"),100)}catch(e){$("nums").innerHTML="<p>Could not reach NASA. Check your signal and tap a place again.</p>"}}
+function choose(k){pick=k;document.querySelectorAll(".pick").forEach((b,i)=>b.classList.toggle("on",i===k));const ds=sel.map(i=>data[i]),sc=ds.map(marsScore),best=sc.indexOf(Math.max(...sc)),fb=$("fb"),nm=x=>ds[x].n.split(',')[0];fb.style.display="block";
+ if(k===best)fb.innerHTML="🎯 Your pick matches the data: <b>"+nm(k)+"</b> scores "+sc[k]+"/100 because it is cold and dry. Now tell us what the numbers do NOT show.";
+ else fb.innerHTML="🤔 Interesting! The recipe scores <b>"+nm(best)+"</b> higher ("+sc[best]+" vs "+sc[k]+"). The score is only cold + dry. What did you see that made you pick <b>"+nm(k)+"</b>? That is your best sentence.";
+ $("s3").style.display="block";fb.scrollIntoView({behavior:"smooth",block:"center"})}
+$("sw").innerHTML=COLS.map((c,i)=>'<button style="background:'+c+'" class="'+(i===0?'on':'')+'" onclick="setc('+i+')"></button>').join("");
+$("em").innerHTML=EMO.map((e,i)=>'<button class="'+(i===0?'on':'')+'" onclick="sete('+i+')">'+e+'</button>').join("");
+function setc(i){col=COLS[i];document.querySelectorAll("#sw button").forEach((b,j)=>b.classList.toggle("on",j===i))}
+function sete(i){emo=EMO[i];document.querySelectorAll("#em button").forEach((b,j)=>b.classList.toggle("on",j===i))}
+$("go").onclick=()=>{if(pick===null){alert("Tap 'This is most like Mars' on one place first.");return}
+ const d=data[sel[pick]],tn=$("tn").value.trim()||"Team Mars",why=$("why").value.trim()||"The numbers say so.";
+ const b=["🔎 Data Detective"];if($("tn").value.trim()&&$("why").value.trim())b.push("🎨 Creative");if($("code").value.trim())b.push("💻 Techy");if(marsScore(d)>=70)b.push("❄️ Cold & Dry Hunter");
+ card={id:Math.random().toString(36).slice(2,9),team:tn,place:d.n.split(',')[0],t:+d.t.toFixed(1),r:+d.r.toFixed(2),sc:marsScore(d),why:why,col:col,emo:emo,b:b};
+ const p=$("patch");p.style.display="block";p.style.background="linear-gradient(160deg,"+col+",#07173f)";
+ p.innerHTML='<div class="e"></div><h2></h2><div>Mission: <b></b></div><div class="s"></div><div class="m"></div><div class="bs"></div>';
+ p.querySelector(".e").textContent=emo;p.querySelector("h2").textContent=tn;p.querySelector("b").textContent=card.place;p.querySelector(".s").textContent="“"+why+"”";
+ p.querySelector(".m").textContent=card.t+" °C · "+card.r+" mm/day · Mars-likeness "+card.sc+"/100";
+ b.forEach(x=>{const s=document.createElement("span");s.className="bd";s.textContent=x;p.querySelector(".bs").appendChild(s)});
+ $("s4").style.display="block";p.scrollIntoView({behavior:"smooth",block:"center"});confetti()};
+$("launch").onclick=async()=>{if(!card)return;$("launch").disabled=true;$("launch").textContent="Launching...";
+ try{await fetch("https://ntfy.sh/"+TOPIC,{method:"POST",body:JSON.stringify(card)});$("launch").textContent="Launched! 🚀";$("sent").textContent="Look at the big screen. Your patch is there.";confetti()}
+ catch(e){$("launch").disabled=false;$("launch").textContent="Try again";$("sent").textContent="No signal? Show your patch to the coordinator instead."}};
+let ct;$("code").oninput=()=>{clearTimeout(ct);ct=setTimeout(()=>{$("pv").srcdoc=$("code").value},400)};
+function confetti(){const c=$("cf"),x=c.getContext("2d");c.width=innerWidth;c.height=innerHeight;const cl=["#eafe07","#0042a6","#fff","#2e96f5","#ff636e"];
+ const ps=Array.from({length:140},()=>({x:Math.random()*c.width,y:-20-Math.random()*c.height*.5,v:2+Math.random()*4,s:4+Math.random()*6,c:cl[Math.floor(Math.random()*5)],r:Math.random()*6}));let f=0;
+ (function a(){x.clearRect(0,0,c.width,c.height);ps.forEach(p=>{p.y+=p.v;p.x+=Math.sin(p.y/30+p.r);x.fillStyle=p.c;x.fillRect(p.x,p.y,p.s,p.s)});if(++f<150)requestAnimationFrame(a);else x.clearRect(0,0,c.width,c.height)})()}
+drawPlaces();
+</script></body></html>

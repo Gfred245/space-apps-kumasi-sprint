@@ -1,36 +1,21 @@
-# Base Camp Earth (Space Apps Kumasi Sprint)
+# Mars Lab (Space Apps Kumasi Sprint)
 
-A tiny web page that shows **live NASA weather data** and lets each team add **one feature** in 20 minutes, with an AI chat helping.
+A small web page for a one-hour sprint. Teams use **real NASA weather data** on their phones, decide which place on Earth is most like Mars, make a **mission patch**, and **launch it to a big screen** where everyone sees it appear.
 
-**Live page:** https://phidlarkson.github.io/space-apps-kumasi-sprint/
+- **Mars Lab (teams, on phones):** https://phidlarkson.github.io/space-apps-kumasi-sprint/
+- **Launch wall (project this on the big screen):** https://phidlarkson.github.io/space-apps-kumasi-sprint/wall.html
 
-## Your challenge
-Make this page feel **NASA-worthy**. Add one feature to **your team's file only**: `features/team-N.html` (N is your team number).
-
-Ideas (pick one):
-- A **place picker**: choose Atacama, Death Valley or Haughton and show the NASA numbers.
-- A **"Mars score"** from temperature and rain, with a short sentence explaining it.
-- A **countdown** to the next Mars launch window (ask the AI for the date and check it).
-- A **colour theme** and a mission patch for your team.
-- A **fact card** with one Mars fact and its source.
-
-## How to do it (works on a phone)
-1. Open your AI chat. Paste this and add your idea:
-   > Write ONE self-contained HTML file (HTML, CSS and JavaScript in the same file, no libraries) for a small feature: [YOUR IDEA]. Keep it under 80 lines, mobile friendly, with a title and large readable text.
-2. Open this repo on **github.com** and sign in. Go to the `features` folder and open **your** file (`team-N.html`).
-3. Tap the **pencil** icon (Edit). Delete everything between `<!-- START -->` and `<!-- END -->` and paste the AI's code there. (If the AI gave a whole HTML file, paste it in place of the whole file.)
-4. Tap **Commit changes**. If GitHub says you do not have permission, choose **Propose changes**, then **Create pull request**.
-5. Tell the coordinator your team number. They merge it, and your feature appears on the live page in about a minute.
-
-## Rules
-- Edit **only your team file**. Never edit `index.html` or another team's file.
-- If your feature breaks, ask the AI: "This is broken, fix it: [paste the code]".
-- The AI helps, you decide. Check any number it gives against the NASA data on the page.
-- No personal details in the code.
+## What a team does (about 15 minutes)
+1. Pick 3 places (Kumasi is already chosen). NASA numbers appear: temperature, rain, sunlight.
+2. Tap the place they think is most like Mars. The page gives feedback right away.
+3. Name the team, pick a colour and an emoji, write one sentence. Build the patch (confetti, badges).
+4. Launch it. It appears on the wall within a few seconds.
+5. Optional, techy: paste AI-generated code into "Level up" and watch it run.
 
 ## For the coordinator
-- Merge pull requests with the green button, or `gh pr merge N --squash`.
-- Pages redeploys in about a minute after each merge.
-- A reset for one team: restore its file from the first commit.
+- Open the **wall** on your laptop and put it on the big screen. New cards pop in every few seconds.
+- Hide a card with the small x in its corner (it hides on your screen only).
+- The data is NASA POWER (power.larc.nasa.gov), the 2025 yearly average at one point per place. These are model estimates, so say "about".
+- "Mars-likeness" is a simple recipe: half "how cold" and half "how dry". It is a talking point, not a verdict.
 
 Space Apps Kumasi is a locally organised event held under the NASA Space Apps Challenge programme. Taking part is not affiliation with, sponsorship by, or endorsement from NASA or any space agency partner.
