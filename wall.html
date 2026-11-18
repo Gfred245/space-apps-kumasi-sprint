@@ -20,7 +20,7 @@ body{background:var(--navy);color:#fff}header{background:transparent}main{max-wi
 </style></head><body><header><small>Space Apps Kumasi · Sprint</small><h1>Launch wall</h1><p><span id="count">0 teams launched</span> · open the Mars Lab page and launch yours</p></header>
 <main><div class="grid" id="g"></div><p id="empty">Waiting for the first launch...</p></main>
 <script>
-const TOPIC="kumasi-gsc26-uv1lurpim3";const seen=new Set(),hid=new Set(JSON.parse(localStorage.getItem("hid")||"[]"));
+const TOPIC="kumasi-gsc26-mtn78dup53";const seen=new Set(),hid=new Set(JSON.parse(localStorage.getItem("hid")||"[]"));
 function ok(c){return c&&typeof c.id==="string"&&typeof c.team==="string"&&typeof c.why==="string"&&typeof c.place==="string"}
 function upd(){const n=document.getElementById("g").children.length;document.getElementById("count").textContent=n+" team"+(n===1?"":"s")+" launched"}
 function add(c){if(seen.has(c.id)||hid.has(c.id))return;seen.add(c.id);document.getElementById("empty").style.display="none";
